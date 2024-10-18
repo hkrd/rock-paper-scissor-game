@@ -19,6 +19,7 @@
             <input type="text" id="player2" placeholder="Player 2 Name" style="display: none;">
             <button type="submit">Start Game</button>
         </form>
+        <button id="load-game">Load Game</button>
     </div>
     <div id="game-play" style="display: none;">
         <h2>Game in Progress</h2>
@@ -31,8 +32,10 @@
             <button class="choice" data-choice="scissors">Scissors</button>
         </div>
         <div id="result"></div>
-        <button id="save-game">Save Game</button>
-        <button id="load-game">Load Game</button>
+        <div class="game-controls">
+            <button id="return-home">Return Home</button>
+            <button id="save-game">Save Game</button>
+        </div>
     </div>
     <script src="{{ url_for('static', path='/script.js') }}"></script>
 </body>

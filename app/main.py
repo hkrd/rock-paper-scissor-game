@@ -16,11 +16,13 @@ class Game(BaseModel):
     score1: int = 0
     score2: int = 0
     is_computer_opponent: bool = False
+    rounds_played: int = 0
 
 options = ["rock", "paper", "scissors"]
 
 
 current_game = None
+saved_game = None  # New variable to store the saved game state
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -73,30 +75,56 @@ def update_scores(outcome):
 def get_scores(player1_choice, player2_choice):
     outcome = determine_winner(player1_choice, player2_choice)
     update_scores(outcome)
+    current_game.rounds_played += 1
     
     return {
         "player1_choice": player1_choice,
         "player2_choice": player2_choice,
         "result": outcome,
         "score1": current_game.score1,
-        "score2": current_game.score2
+        "score2": current_game.score2,
+        "rounds_played": current_game.rounds_played
     }
 
 @app.post("/save_game")
 async def save_game():
-    global current_game
+    global current_game, saved_game
     if not current_game:
         return {"error": "No game in progress"}
     
-    # In a real application, you would save the game to a database here
-    # For this example, we'll just return the current game state
-    return current_game
+    # Save the current game state
+    saved_game = Game(
+        player1=current_game.player1,
+        player2=current_game.player2,
+        score1=current_game.score1,
+        score2=current_game.score2,
+        is_computer_opponent=current_game.is_computer_opponent,
+        rounds_played=current_game.rounds_played
+    )
+    
+    return {"message": "Game saved successfully"}
 
 @app.get("/load_game")
 async def load_game():
-    global current_game
-    # In a real application, you would load the game from a database here
-    # For this example, we'll just return the current game state if it exists
-    if not current_game:
+    global saved_game, current_game
+    if not saved_game:
         return {"error": "No saved game found"}
-    return current_game
+    
+    # Set the current_game to the saved_game state
+    current_game = Game(
+        player1=saved_game.player1,
+        player2=saved_game.player2,
+        score1=saved_game.score1,
+        score2=saved_game.score2,
+        is_computer_opponent=saved_game.is_computer_opponent,
+        rounds_played=saved_game.rounds_played
+    )
+    
+    return {
+        "player1": current_game.player1,
+        "player2": current_game.player2,
+        "score1": current_game.score1,
+        "score2": current_game.score2,
+        "is_computer_opponent": current_game.is_computer_opponent,
+        "rounds_played": current_game.rounds_played
+    }

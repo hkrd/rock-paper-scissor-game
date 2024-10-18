@@ -79,3 +79,9 @@ input, button {
 .text-computer {
     color: #800000; /* Dark red */
 }
+
+#save-game, #return-home {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

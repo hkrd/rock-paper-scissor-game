@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const turnCounter = document.createElement('div');
     gamePlay.insertBefore(turnCounter, result);
 
+    const returnHomeButton = document.getElementById('return-home');
+
     let currentPlayerName = '';
     let isComputerOpponent = false;
     let player1Choice = null;
@@ -105,22 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const data = await response.json();
-        if (data.error) {
-            result.textContent = data.error;
-        } else {
-            highlightButton(data.player2_choice, 'computer');
-            result.textContent = `${data.result === 'tie' ? 'Tie' : `${data.result} wins this turn`}`;
-            updateScores(data, roundsPlayed + 1);
-            updateTurnCounter();
-            if (roundsPlayed < 3) {
-                await countdown();
-                resetButtons();
-                enableButtons();
-                updateCurrentPlayer();
-            } else {
-                endGame();
-            }
-        }
+        updateGameState(data);
     }
 
     async function playAgainstPlayer(choice) {
@@ -146,25 +133,35 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            if (data.error) {
-                result.textContent = data.error;
-            } else {
-                result.textContent = `${data.result === 'tie' ? 'Tie' : `${data.result} wins this turn`}`;
-                updateScores(data, roundsPlayed + 1);
-                updateTurnCounter();
-                if (roundsPlayed < 3) {
-                    await countdown();
-                    resetButtons();
-                    enableButtons();
-                    currentPlayerName = player1Name.textContent;
-                    updateCurrentPlayer();
-                } else {
-                    endGame();
-                }
-            }
+            updateGameState(data);
 
             player1Choice = null;
             player2Choice = null;
+        }
+    }
+
+    async function updateGameState(data) {
+        if (data.error) {
+            result.textContent = data.error;
+        } else {
+            if (isComputerOpponent) {
+                highlightButton(data.player2_choice, 'computer');
+            }
+            result.textContent = `${data.result === 'tie' ? 'Tie' : `${data.result} wins this turn`}`;
+            updateScores(data, data.rounds_played);
+            updateTurnCounter();
+            if (roundsPlayed < 3) {
+                await countdown();
+                resetButtons();
+                enableButtons();
+                if (!isComputerOpponent) {
+                    currentPlayerName = player1Name.textContent;
+                }
+                updateCurrentPlayer();
+            } else {
+                await countdown();
+                endGame();
+            }
         }
     }
 
@@ -266,14 +263,13 @@ document.addEventListener('DOMContentLoaded', () => {
             isComputerOpponent = data.is_computer_opponent;
             gameSetup.style.display = 'none';
             gamePlay.style.display = 'block';
-            roundsPlayed = data.score1 + data.score2;
+            roundsPlayed = data.rounds_played;
             updateTurnCounter();
-            if (roundsPlayed === 3) {
+            if (roundsPlayed >= 3) {
                 endGame();
             } else {
                 enableButtons();
             }
-            alert('Game loaded successfully!');
         }
     });
 
@@ -281,5 +277,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = document.querySelector(`.choice[data-choice="${choice}"]`);
         button.classList.remove('choice-player1', 'choice-player2', 'choice-computer');
         button.classList.add(`choice-${player}`);
+    }
+
+    returnHomeButton.addEventListener('click', () => {
+        if (confirm('Are you sure you want to return to the main page? Any unsaved progress will be lost.')) {
+            gamePlay.style.display = 'none';
+            gameSetup.style.display = 'block';
+            resetGame();
+        }
+    });
+
+    function resetGame() {
+        player1Input.value = '';
+        player2Input.value = '';
+        player2Input.style.display = 'none';
+        player1Score.textContent = '0';
+        player2Score.textContent = '0';
+        result.textContent = '';
+        currentPlayerName = '';
+        isComputerOpponent = false;
+        player1Choice = null;
+        player2Choice = null;
+        roundsPlayed = 0;
+        resetButtons();
+        enableButtons();
     }
 });
