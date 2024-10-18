@@ -27,6 +27,11 @@ uvicorn app.main:app --reload
 
 2. Open your web browser and navigate to `http://127.0.0.1:8000` to access the game.
 
+## Deployed
+You can find live deployment of the game [Here](https://rock-paper-scissor-game-j67a.onrender.com/)
+
+You can find the Swagger documentation [Here](https://rock-paper-scissor-game-j67a.onrender.com/docs)
+
 ## Notes
 
 I made the game to meet the mendatory requirements for having both backend and frontend.
@@ -43,5 +48,8 @@ Everything loads on the same page with JS i didn't add any other pages.
 I added some basic CSS to style the page.
 
 I added some JavaScript to handle the game logic on the frontend, and to allow for a more interactive user experience.
-I'm not a great frontend developer but I tried to keep everything DRY, though everything is in the same file.
+I'm not great at frontend but I tried to keep everything DRY, though everything is in the same file.
 
+Deployed the game on Render so you can easily try it out :)
+
+Time it took was about 2.5h
