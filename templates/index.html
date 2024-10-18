@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <div id="game-setup">
+        <h2>Start a New Game</h2>
+        <form id="start-game-form">
+            <input type="text" id="player1" placeholder="Player 1 Name" required>
+            <div id="opponent-choice">
+                <button type="button" id="choose-player">Play against Player</button>
+                <button type="button" id="choose-computer">Play against Computer</button>
+            </div>
+            <input type="text" id="player2" placeholder="Player 2 Name" style="display: none;">
+            <button type="submit">Start Game</button>
+        </form>
+    </div>
+    <div id="game-play" style="display: none;">
+        <h2>Game in Progress</h2>
+        <p>Player 1: <span id="player1-name"></span> - Score: <span id="player1-score">0</span></p>
+        <p>Player 2: <span id="player2-name"></span> - Score: <span id="player2-score">0</span></p>
+        <div id="player-turn">
+            <h3><span id="current-player"></span></h3>
+            <button class="choice" data-choice="rock">Rock</button>
+            <button class="choice" data-choice="paper">Paper</button>
+            <button class="choice" data-choice="scissors">Scissors</button>
+        </div>
+        <div id="result"></div>
+        <button id="save-game">Save Game</button>
+        <button id="load-game">Load Game</button>
+    </div>
+    <script src="{{ url_for('static', path='/script.js') }}"></script>
+</body>
+</html>

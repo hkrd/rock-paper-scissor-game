@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+input, button {
+    padding: 5px;
+    font-size: 16px;
+}
+
+#opponent-choice {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#opponent-choice button {
+    flex: 1;
+}
+
+#player-turn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.choice {
+    margin: 0 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+#result {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#save-game, #load-game {
+    display: block;
+    margin: 20px auto;
+}
+
+/* Add these new classes at the end of the file */
+.choice-player1 {
+    background-color: #90EE90; /* Light green */
+}
+
+.choice-player2 {
+    background-color: #FFFF99; /* Light yellow */
+}
+
+.choice-computer {
+    background-color: #FFB3BA; /* Light red */
+}
+
+/* Add these new classes at the end of the file */
+.text-player1 {
+    color: #008000; /* Dark green */
+}
+
+.text-player2 {
+    color: #808000; /* Dark yellow */
+}
+
+.text-computer {
+    color: #800000; /* Dark red */
+}
